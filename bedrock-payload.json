@@ -1,0 +1,12 @@
+{
+  "messages": [
+    {
+      "role": "user",
+      "content": [
+        {
+          "text": "Analyze this CI failure: pytest failed because expected status code 500 but actual status code was 200. Give root cause and recommended fix."
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,1 @@
+{"statusCode": 200, "body": "{\"status\": \"analyzed\", \"root_cause\": \"The pytest expected HTTP 500, but the Flask application correctly returned HTTP 200.\", \"recommended_fix\": \"Change the test assertion from status_code == 500 back to status_code == 200.\", \"failure_log\": \"FAILED tests/test_app.py - assert 200 == 500\"}"}
