@@ -108,10 +108,10 @@ The Lambda function receives a CI/CD failure log and returns a structured analys
 
     AI-CICD-Failure-Analyzer/
     +-- app/
-    ¦   +-- __init__.py
-    ¦   +-- app.py
+        +-- __init__.py
+        +-- app.py
     +-- tests/
-    ¦   +-- test_app.py
+        +-- test_app.py
     +-- lambda_function.py
     +-- Dockerfile
     +-- requirements.txt
