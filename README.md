@@ -1,174 +1,240 @@
-# AI CI/CD Failure Analyzer
+# AI-Powered CI/CD Failure Analysis & Root Cause Assistant
 
-An automated DevOps project that detects CI/CD pipeline failures, captures test logs, and analyzes the failure using AWS Lambda to provide a root cause and recommended fix.
+An AI-powered DevOps/SRE solution that automatically analyzes CI/CD pipeline failures and generates root cause analysis, error classification, suggested fixes, and confidence using an LLM.
 
-## Architecture
+## 🚀 Overview
 
+In traditional CI/CD pipelines, engineers often need to manually inspect Jenkins logs to identify why a build or test failed.
+
+This project automates failure analysis by connecting Jenkins with AWS Lambda and the OpenAI Responses API.
+
+When a CI/CD pipeline fails, the system:
+
+1. Captures the available failure logs
+2. Sends the logs to AWS Lambda
+3. Processes the failure information
+4. Sends the logs to an LLM
+5. Generates an AI-powered root cause analysis
+6. Provides a suggested remediation
+
+## 🏗️ Architecture
+
+```text
+Developer
+    |
+    | git push
+    v
 GitHub
-   ?
-Jenkins Webhook
-   ?
-Jenkins CI/CD Pipeline
-   ?
-Pytest
-   ?
-Docker Build
-   ?
-Failure Detection
-   ?
+    |
+    | Webhook
+    v
+Jenkins CI/CD
+    |
+    +--> Install Dependencies
+    |
+    +--> Run Tests
+    |
+    +--> Docker Build
+    |
+    v
+Pipeline Failure
+    |
+    v
+Failure Log Capture
+    |
+    v
 AWS Lambda
-   ?
-Root Cause Analysis
-   ?
-Recommended Fix
+    |
+    v
+OpenAI Responses API
+    |
+    v
+AI Root Cause Analysis
+    |
+    +--> Error Type
+    +--> Root Cause
+    +--> Suggested Fix
+    +--> Confidence
 
-## Technologies Used
-
-- Python
-- Flask
-- Pytest
-- Git & GitHub
-- Jenkins
-- Docker
-- AWS Lambda
-- AWS IAM
-- AWS Lambda Function URL
-- PowerShell
-
-## Project Workflow
-
-1. Developer pushes code to GitHub.
-2. GitHub Webhook triggers the Jenkins pipeline.
-3. Jenkins checks out the source code.
-4. Jenkins installs Python dependencies.
-5. Pytest automatically runs application tests.
-6. If tests fail, Jenkins captures the test output.
-7. Jenkins sends the failure log to AWS Lambda.
-8. AWS Lambda analyzes the failure.
-9. Lambda returns:
-   - Root cause
-   - Recommended fix
-   - Original failure log
-10. If tests pass, Jenkins continues to the Docker build stage.
-
-## Failure Analysis Example
-
-Example CI failure:
-
-    FAILED tests/test_app.py - assert 200 == 500
-
-Lambda analysis:
-
-    Root Cause:
-    The pytest expected HTTP 500, but the Flask application returned HTTP 200.
-
-    Recommended Fix:
-    Change the test assertion from status_code == 500 back to status_code == 200.
-
-## Jenkins Pipeline
+🛠️ Technologies
+Cloud
+AWS Lambda
+AWS IAM
+AWS Lambda Function URL
+DevOps & CI/CD
+Jenkins
+GitHub
+GitHub Webhooks
+Docker
+Git
+GenAI
+OpenAI API
+OpenAI Responses API
+GPT-5.6 Luna
+Programming & Testing
+Python
+Groovy
+Flask
+Pytest
+📁 Project Structure
+AI-CICD-Failure-Analyzer/
+│
+├── app/
+│   ├── __init__.py
+│   └── app.py
+│
+├── tests/
+│   └── test_app.py
+│
+├── lambda/
+│   ├── lambda_function.py
+│   ├── requirements.txt
+│   └── lambda_function.zip
+│
+├── Jenkinsfile
+├── Dockerfile
+├── requirements.txt
+├── .gitignore
+└── README.md
+⚙️ CI/CD Pipeline
 
 The Jenkins pipeline contains the following stages:
 
-- Checkout
-- Install Dependencies
-- Run Tests
-- Docker Build
+1. Checkout
 
-Failure handling is implemented using Jenkins post-build actions. When the pipeline fails, the captured test output is sent to the AWS Lambda Function URL.
+Jenkins retrieves the latest source code from the GitHub repository.
 
-## Docker
+2. Install Dependencies
+
+Python dependencies are installed from requirements.txt.
+
+3. Run Tests
+
+Pytest executes the application test suite.
+
+Test output is captured for failure analysis.
+
+4. Docker Build
 
 The application is containerized using Docker.
 
-Build the image:
+Docker build output is captured separately so Docker-related failures can also be analyzed.
 
-    docker build -t ai-cicd-failure-analyzer .
+5. Failure Analysis
 
-Run the container:
+When a pipeline failure occurs, Jenkins collects the available logs and sends them to the AWS Lambda Function URL.
 
-    docker run -d -p 5000:5000 --name ai-cicd-analyzer ai-cicd-failure-analyzer
+6. AI Analysis
 
-Application URL:
+AWS Lambda sends the failure information to the OpenAI Responses API.
 
-    http://localhost:5000
+The AI analyzes the CI/CD failure and returns a structured response.
 
-## AWS Lambda
+🤖 AI Output
 
-Lambda function:
+The target analysis format is:
 
-    AI-CICD-Failure-Analyzer
+Error Type:
+Root Cause:
+Suggested Fix:
+Confidence:
 
-Runtime:
+Example:
 
-    Python 3.14
+Error Type: ImportError during pytest test collection
 
-The Lambda function receives a CI/CD failure log and returns a structured analysis containing the root cause and recommended fix.
+Root Cause:
+The application imported an invalid class from the Flask package,
+preventing the test module from loading.
 
-## Project Structure
+Suggested Fix:
+Use the correct Flask class and rerun the CI pipeline.
 
-    AI-CICD-Failure-Analyzer/
-    +-- app/
-        +-- __init__.py
-        +-- app.py
-    +-- tests/
-        +-- test_app.py
-    +-- lambda_function.py
-    +-- Dockerfile
-    +-- requirements.txt
-    +-- README.md
-    +-- .gitignore
+Confidence:
+100%
+🧪 Failure Scenarios Tested
+Scenario 1 — Test Assertion Failure
 
-## CI/CD Validation
+An incorrect test assertion was intentionally introduced.
 
-The project was tested with both failure and successful pipeline scenarios.
+Result:
 
-Failure scenario:
+Jenkins Test Stage     → FAILURE
+Lambda                 → SUCCESS
+OpenAI Analysis        → SUCCESS
+Root Cause Analysis   → Generated
+Scenario 2 — Python Import Failure
 
-    Pytest failure
-        ?
-    Jenkins detects failure
-        ?
-    Failure log captured
-        ?
-    AWS Lambda invoked
-        ?
-    Root cause identified
-        ?
-    Recommended fix returned
+The Flask import was intentionally modified to create an import error.
 
-Successful scenario:
+Result:
 
-    GitHub Push
-        ?
-    Jenkins
-        ?
-    Pytest PASS
-        ?
-    Docker Build PASS
-        ?
-    Jenkins SUCCESS
+Pytest Collection      → FAILURE
+Lambda                 → SUCCESS
+OpenAI Analysis        → SUCCESS
+Root Cause Analysis   → Generated
+Scenario 3 — Docker Build Failure
 
-## Key DevOps Skills Demonstrated
+The Docker base image was intentionally changed to an invalid image:
 
-- CI/CD pipeline automation
-- Jenkins Pipeline
-- GitHub Webhooks
-- Automated testing
-- Failure handling
-- Log collection
-- Serverless AWS Lambda
-- Docker containerization
-- AWS IAM
-- Cloud automation
-- DevOps troubleshooting
+FROM python:999.99-slim
 
-## Future Enhancement
+Docker correctly detected the invalid image and failed the build.
 
-Amazon Bedrock integration can be enabled once model authorization is available for the AWS account. This will allow the rule-based analyzer to be replaced or enhanced with an LLM-based root cause analysis workflow.
+Result:
 
-## Author
+Run Tests              → SUCCESS
+Docker Build           → FAILURE
+Lambda                 → SUCCESS
+OpenAI API             → SUCCESS
+
+The Dockerfile was subsequently restored and the Jenkins pipeline returned to a successful green build.
+
+🔐 Security
+OpenAI API credentials are stored as AWS Lambda environment variables.
+Secrets are not hardcoded in the application source code.
+API keys and credentials should never be committed to GitHub.
+AWS IAM is used for controlled access to AWS resources.
+🎯 Key Features
+Automated CI/CD failure detection
+Jenkins pipeline integration
+Failure log collection
+AWS Lambda serverless processing
+LLM-powered root cause analysis
+Error classification
+Suggested remediation
+Confidence scoring
+Docker build failure analysis support
+📈 DevOps / SRE Benefits
+
+The solution helps engineers:
+
+Reduce manual Jenkins log investigation
+Identify probable root causes faster
+Troubleshoot CI/CD failures efficiently
+Standardize failure analysis
+Integrate Generative AI into DevOps workflows
+🔮 Future Enhancements
+Slack / Microsoft Teams notifications
+Email alerts
+Incident history and dashboards
+Jira ticket creation
+Kubernetes failure analysis
+Prometheus and Grafana integration
+Automated remediation workflows
+Multi-LLM support
+👨‍💻 Author
 
 Asim Boghani
 
+Cloud & DevOps / SRE Engineer
+
 GitHub:
 https://github.com/aasemboghani-dev
+
+
+### Ab commands:
+
+```cmd
+cd C:\Users\AASEM\AI-CICD-Failure-Analyzer
+notepad README.md
