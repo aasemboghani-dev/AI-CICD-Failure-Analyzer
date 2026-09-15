@@ -233,8 +233,35 @@ GitHub:
 https://github.com/aasemboghani-dev
 
 
-### Ab commands:
+    +--> Confidence
 
-```cmd
-cd C:\Users\AASEM\AI-CICD-Failure-Analyzer
-notepad README.md
+```
+
+## 🛠️ Technologies
+
+### Cloud
+
+- AWS Lambda
+- AWS IAM
+- AWS Lambda Function URL
+
+### DevOps & CI/CD
+
+- Jenkins
+- GitHub
+- GitHub Webhooks
+- Docker
+- Git
+
+### GenAI
+
+- OpenAI API
+- OpenAI Responses API
+- GPT-5.6 Luna
+
+### Programming & Testing
+
+- Python
+- Groovy
+- Flask
+- Pytest
